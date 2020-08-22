@@ -1,0 +1,76 @@
+syntax = "proto3";
+option go_package = "github.com/gojobprocessor/gojobprocessor-master/proto/master";
+option java_multiple_files = true;
+option java_package = "com.jobprocessor.grpc.proto.gen.master";
+option java_outer_classname = "JobProcessorProto";
+
+package proto;
+
+import "google/protobuf/empty.proto";
+
+service JobProcessor {
+  rpc GetJob (JobId) returns (JobStatus) {}
+  rpc RunJob (JobRequest) returns (JobStatus) {}
+  rpc CancelJob (JobId) returns (JobStatus) {}
+  rpc RemoveJob (JobId) returns (JobStatus) {}
+  rpc RegisterWorker (WorkerInfo) returns (RegisterStatus) {}
+  rpc Heartbeat (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+}
+
+message JobId {
+  int64 job_id = 1;
+}
+
+message JobRequest {
+  Job job = 1;
+}
+
+message Job {
+  JobId job_id = 1;
+  string name = 2;
+  ExecLang language = 3;
+  string cmd = 4;
+  bool   parallel = 5;
+  int32  exec_date = 6;
+  bytes  exec_file = 7;
+  enum ExecLang {
+    JAVA = 0;
+    GO = 1;
+    PYTHON = 2;
+    C = 3;
+    Cpp = 4;
+  }
+}
+
+message JobDetail {
+  Job job = 1;
+}
+
+message JobStatus {
+  JobDetail job_detail = 1;
+  int32 last_exec = 2;
+  int32 last_exec_duration = 3;
+}
+
+message WorkerInfo {
+  string host = 1;
+  int32  port = 2;
+}
+
+message RegisterStatus {
+  NodeRegisterStatus status = 1;
+  string message = 2;
+  enum NodeRegisterStatus {
+    OK = 0;
+    FAILED = 1;
+  }
+}
+
+message WorkerStatus {
+  int32 worker_date = 1;
+  WorkerState state = 2;
+  enum WorkerState {
+    UP = 0;
+    DOWN = 1;
+  }
+}
