@@ -3,7 +3,7 @@ package grpc_service
 import (
 	"context"
 	"fmt"
-	"github.com/gojobprocessor-master/proto/master"
+	"github.com/gojobprocessor/proto/master"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc"
 	"log"
