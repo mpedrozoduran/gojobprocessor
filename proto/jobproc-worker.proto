@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/gojobprocessor/gojobprocessor-master/proto/worker";
+option go_package = "github.com/gojobprocessor/gojobprocessor/proto/worker";
 option java_multiple_files = true;
 option java_package = "com.jobprocessor.grpc.proto.gen.worker";
 option java_outer_classname = "JobProcessorProto";
