@@ -1,35 +1,41 @@
-package grpc_service
+package worker
 
 import (
 	"context"
 	"fmt"
-	"github.com/gojobprocessor/proto/worker"
+	server "github.com/mpedrozoduran/gojobprocessor/grpc_service"
+	"github.com/mpedrozoduran/gojobprocessor/proto/worker"
 	"google.golang.org/grpc"
 	"log"
 	"net"
 )
 
-func (s *WorkerServer) GetJob(ctx context.Context, in *worker.JobId) (*worker.JobStatus, error) {
+type ServerWorker struct {
+	worker.UnimplementedJobProcessorServer
+	server.Server
+}
+
+func (s *ServerWorker) GetJob(ctx context.Context, in *worker.JobId) (*worker.JobStatus, error) {
 	log.Printf("Calling GetJob: %v", in)
 	return &worker.JobStatus{}, nil
 }
 
-func (s *WorkerServer) RunJob(ctx context.Context, in *worker.JobRequest) (*worker.JobStatus, error) {
+func (s *ServerWorker) RunJob(ctx context.Context, in *worker.JobRequest) (*worker.JobStatus, error) {
 	log.Printf("Calling GetJob: %v", in)
 	return &worker.JobStatus{}, nil
 }
 
-func (s *WorkerServer) CancelJob(ctx context.Context, in *worker.JobId) (*worker.JobStatus, error) {
+func (s *ServerWorker) CancelJob(ctx context.Context, in *worker.JobId) (*worker.JobStatus, error) {
 	log.Printf("Calling CancelJob: %v", in)
 	return &worker.JobStatus{}, nil
 }
 
-func (s *WorkerServer) RemoveJob(ctx context.Context, in *worker.JobId) (*worker.JobStatus, error) {
+func (s *ServerWorker) RemoveJob(ctx context.Context, in *worker.JobId) (*worker.JobStatus, error) {
 	log.Printf("Calling RemoveJob: %v", in)
 	return &worker.JobStatus{}, nil
 }
 
-func (s *WorkerServer) ExecGrpcServer() {
+func (s *ServerWorker) ExecGrpcServer() {
 	lis, err := net.Listen(s.Network, fmt.Sprintf("%s:%s", s.Host, s.Port))
 	if err != nil {
 		log.Fatalf("Could not start worker node: %s", err)

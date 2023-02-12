@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/gojobprocessor/gojobprocessor/proto/master";
+option go_package = "proto/master";
 option java_multiple_files = true;
 option java_package = "com.jobprocessor.grpc.proto.gen.master";
 option java_outer_classname = "JobProcessorProto";
@@ -14,7 +14,7 @@ service JobProcessor {
   rpc CancelJob (JobId) returns (JobStatus) {}
   rpc RemoveJob (JobId) returns (JobStatus) {}
   rpc RegisterWorker (WorkerInfo) returns (RegisterStatus) {}
-  rpc Heartbeat (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc Heartbeat (WorkerInfo) returns (google.protobuf.Empty) {}
 }
 
 message JobId {
@@ -53,8 +53,11 @@ message JobStatus {
 }
 
 message WorkerInfo {
-  string host = 1;
-  int32  port = 2;
+  string id = 1;
+  string host = 2;
+  int32  port = 3;
+  string  name = 4;
+  WorkerState state = 5;
 }
 
 message RegisterStatus {
@@ -67,10 +70,13 @@ message RegisterStatus {
 }
 
 message WorkerStatus {
-  int32 worker_date = 1;
-  WorkerState state = 2;
-  enum WorkerState {
-    UP = 0;
-    DOWN = 1;
-  }
+  WorkerInfo worker_info = 1;
+
+  int32 worker_date = 3;
+}
+
+enum WorkerState {
+  UP = 0;
+  DOWN = 1;
+  STARTING = 3;
 }

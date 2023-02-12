@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/gojobprocessor/gojobprocessor/proto/worker";
+option go_package = "proto/worker";
 option java_multiple_files = true;
 option java_package = "com.jobprocessor.grpc.proto.gen.worker";
 option java_outer_classname = "JobProcessorProto";
@@ -24,17 +24,18 @@ message JobRequest {
 message Job {
   JobId job_id = 1;
   string name = 2;
-  ExecLang language = 3;
+  ExecType language = 3;
   string cmd = 4;
   bool   parallel = 5;
   int32  exec_date = 6;
   bytes  exec_file = 7;
-  enum ExecLang {
+  enum ExecType {
     JAVA = 0;
     GO = 1;
     PYTHON = 2;
     C = 3;
     Cpp = 4;
+    DB_QUERY = 5;
   }
 }
 
